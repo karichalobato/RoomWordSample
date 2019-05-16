@@ -3,8 +3,10 @@ package com.Lobato.roomwordsample.data
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import com.Lobato.roomwordsample.data.models.Word
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WordViewModel(application: Application) : AndroidViewModel(application) {
 
