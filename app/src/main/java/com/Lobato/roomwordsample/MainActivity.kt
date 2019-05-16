@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -20,43 +21,20 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val newWordActivityRequestCode = 1
     private lateinit var wordViewModel: WordViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-
-        setSupportActionBar(toolbar)
-
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = WordListAdapter(this)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-
-        wordViewModel = ViewModelProviders.of(this).get(WordViewModel::class.java)
-
-
-        wordViewModel.allWords.observe(this, Observer { words ->
-
-            words?.let { adapter.setWords(it) }
-        })
-
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener {
-            val intent = Intent(this@MainActivity, NewWordActivity::class.java)
-            startActivityForResult(intent, newWordActivityRequestCode)
-        }
+    companion object {
+        const val newWordActivityRequestCode = 1
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
-        super.onActivityResult(requestCode, resultCode, intentData)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            intentData?.let { data ->
-                val word = Word(data.getStringExtra(NewWordActivity.EXTRA_REPLY))
+        if (requestCode == newWordActivityRequestCode
+            && resultCode == Activity.RESULT_OK
+        ) {
+            data?.let {
+                val word = Word(it.getStringExtra(NewWordActivity.EXTRA_REPLY))
                 wordViewModel.insert(word)
             }
         } else {
@@ -66,5 +44,29 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
+
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
+        val adapter = WordListAdapter(this)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        wordViewModel = ViewModelProviders
+            .of(this).get(WordViewModel::class.java)
+
+        wordViewModel.allWords.observe(this, Observer { words ->
+            words?.let { adapter.setWords(it) }
+        })
+
+        fab.setOnClickListener {
+            val intent = Intent(this@MainActivity, NewWordActivity::class.java)
+            startActivityForResult(intent, newWordActivityRequestCode)
+        }
+
     }
 }
