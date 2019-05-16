@@ -34,14 +34,12 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Get a new or existing ViewModel from the ViewModelProvider.
+
         wordViewModel = ViewModelProviders.of(this).get(WordViewModel::class.java)
 
-        // Add an observer on the LiveData returned by getAlphabetizedWords.
-        // The onChanged() method fires when the observed data changes and the activity is
-        // in the foreground.
+
         wordViewModel.allWords.observe(this, Observer { words ->
-            // Update the cached copy of the words in the adapter.
+
             words?.let { adapter.setWords(it) }
         })
 
