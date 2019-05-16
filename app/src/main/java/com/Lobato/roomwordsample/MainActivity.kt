@@ -16,6 +16,7 @@ import com.Lobato.roomwordsample.data.WordListAdapter
 import com.Lobato.roomwordsample.data.WordViewModel
 import com.Lobato.roomwordsample.data.models.Word
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+
         setSupportActionBar(toolbar)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
@@ -57,7 +58,7 @@ class MainActivity : AppCompatActivity() {
             intentData?.let { data ->
                 val word = Word(data.getStringExtra(NewWordActivity.EXTRA_REPLY))
                 wordViewModel.insert(word)
-            }!!
+            }
         } else {
             Toast.makeText(
                 applicationContext,
