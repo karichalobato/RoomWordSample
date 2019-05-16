@@ -35,3 +35,4 @@ class NewWordActivity : AppCompatActivity() {
         const val EXTRA_REPLY = "com.example.android.wordlistsql.REPLY"
     }
 }
+

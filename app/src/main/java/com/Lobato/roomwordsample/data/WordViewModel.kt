@@ -14,10 +14,11 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
     val allWords: LiveData<List<Word>>
 
     init {
-        val wordsDao = WordRoomDatabase.getDatabase(application).wordDao()
+        val wordsDao = WordRoomDatabase.getDatabase(application, viewModelScope).wordDao()
         repository = WordRepository(wordsDao)
         allWords = repository.allWords
     }
+
 
     fun insert(word: Word) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(word)
