@@ -10,7 +10,7 @@ import java.security.AccessControlContext
 
 @Database(entities = [Word::class], version = 1)
 abstract class WordRoomDatabase : RoomDatabase() {
-    abstract fun wordDa(): WordDao
+    abstract fun wordDao(): WordDao
 
     companion object{
         @Volatile
